@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import BookForm from './BookForm';
+import { Link } from 'react-router';
 import * as bookActions from '../../actions/bookActions';
 
 class Book extends React.Component{
@@ -14,30 +16,28 @@ class Book extends React.Component{
   render(){
     let titleInput;
     return(
-      <div>
-        <h3>Books</h3>
-        <ul>
-          {this.props.books.map((b, i) => <li key={i}><strong>{b.title}</strong> by {b.author}</li> )}
-        </ul>
-        <div>
-          <h3>Books Form</h3>
-          <form onSubmit={e => {
-            e.preventDefault();
-            var input = {
-              title: titleInput.value,
-              author: this.authorInput.value
-            };
-            this.submitBook(input);
-            e.target.reset();
-          }}>
-            <label htmlFor="name">Title
-              <input type="text" name="title" ref={node => titleInput = node}/>
-            </label>
-            <label htmlFor="author">Author
-              <input type="text" name="author" ref={(input) => this.authorInput = input}/>
-            </label>
-            <input type="submit" />
-          </form>
+      <div className="row">
+        <div className="col-md-6">
+          <h3>Books</h3>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+            {this.props.books.map((b, i) => <tr key={i}>
+              <td>{b.title}</td>
+              <td><Link to={`/books/${b.id}`}>View</Link></td>
+            </tr> )}
+            </tbody>
+          </table>
+        </div>
+        <div className="col-md-6">
+          <h3>New Book</h3>
+          {/* Import and inject Book form */}
+         <BookForm submitBook={this.submitBook.bind(this)} />
         </div>
       </div>
     )
@@ -54,9 +54,11 @@ const mapStateToProps = (state, ownProps) => {
 
 // Maps actions to props
 const mapDispatchToProps = (dispatch) => {
+  // console.log(book);
   return {
   // You can now say this.props.createBook
-    createBook: book => dispatch(bookActions.createBook(book))
+    createBook: book => dispatch(bookActions.createBook(book)),
+    // fetchBooks: fetch => dispatch(bookActions.fetchBooks())
   }
 };
 

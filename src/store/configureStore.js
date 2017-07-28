@@ -1,16 +1,20 @@
-import {createStore, compose, applyMiddleware} from 'redux';
-// Import thunk middleware
-import thunk from 'redux-thunk';
-import rootReducer from '../reducers';
+// import {createStore, compose, applyMiddleware} from 'redux';
+// // Import thunk middleware
+// import thunk from 'redux-thunk';
+// import rootReducer from '../reducers';
 
-export default function configureStore(initialState) {
-  return createStore(rootReducer, initialState,
-    // Apply to store
-    applyMiddleware(thunk)
-  );
+// export default function configureStore(initialState) {
+//   return createStore(rootReducer, initialState,
+//     // Apply to store
+//     applyMiddleware(thunk)
+//   );
+// }
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports = require('./configureStore.prod');
+} else {
+  module.exports = require('./configureStore.dev');
 }
-
-
 // import {createStore, compose, applyMiddleware} from 'redux';
 // import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 // import thunk from 'redux-thunk';

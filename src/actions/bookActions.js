@@ -1,26 +1,40 @@
+import * as actionTypes from './actionTypes';
 import Axios from 'axios';
 
-// API URL
-// const apiUrl = 'http://www.mockapi.io/projects/591e0c4b1c8911001140d320/api/book';
-const apiUrl = 'https://5979ace680bdcc0011d737c9.mockapi.io/api/books';
-// Sync Action
+const apiUrl = 'http://5979ace680bdcc0011d737c9.mockapi.io/api/';
+
+// export const createBook = (book) => {
+//   return {
+//     type: actionTypes.CREATE_BOOK,
+//     book
+//   }
+// };
+
 export const fetchBooksSuccess = (books) => {
   return {
-    type: 'FETCH_BOOKS_SUCCESS',
+    type: actionTypes.FETCH_BOOKS_SUCCESS,
     books
-  }
+  };
 };
-//Async Action
+
+export const createBookSuccess = (book) => {
+  return {
+    type: actionTypes.CREATE_BOOK_SUCCESS,
+    book
+  };
+};
+
+export const fetchBookByIdSuccess = (book) => {
+  return {
+    type: actionTypes.FETCH_BOOK_BY_ID_SUCCESS,
+    book
+  };
+};
+
 export const fetchBooks = () => {
-  // Returns a dispatcher function
-  // that dispatches an action at a later time
   return (dispatch) => {
-    // Returns a promise
-    return Axios.get(apiUrl)
+    return Axios.get(`${apiUrl}/books`)
       .then(response => {
-        // Dispatch another action
-        // to consume data
-        console.log('successfully got books')
         dispatch(fetchBooksSuccess(response.data))
       })
       .catch(error => {
@@ -31,10 +45,8 @@ export const fetchBooks = () => {
 
 export const createBook = (book) => {
   return (dispatch) => {
-    return Axios.post(apiUrl, book)
+    return Axios.post(`${apiUrl}/books`, book)
       .then(response => {
-        // Dispatch a synchronous action
-        // to handle data
         dispatch(createBookSuccess(response.data))
       })
       .catch(error => {
@@ -43,18 +55,53 @@ export const createBook = (book) => {
   };
 };
 
-export const createBookSuccess = (book) => {
-  return {
-    type: 'CREATE_BOOK_SUCCESS',
-    book
-  }
+export const fetchBookById = (bookId) => {
+  return (dispatch) => {
+    return Axios.get(`${apiUrl}/books/${bookId}`)
+      .then(response => {
+
+        dispatch(fetchBookByIdSuccess(response.data));
+      })
+      .catch(error => {
+        throw(error);
+      });
+  };
 };
-// export const createBook = (book) => {
-//   // Return action
-//   return {
-//     // Unique identifier
-//     type: 'CREATE_BOOK',
-//     // Payload
-//     book: book
-//   }
-// };
+
+export const addToCartSuccess = (item) => {
+  return {
+    type: actionTypes.ADD_TO_CART_SUCCESS,
+    item
+  };
+};
+
+export const addToCart = (item) => {
+  return (dispatch) => {
+    return Axios.post(`${apiUrl}/Cart`, item)
+      .then(response => {
+        dispatch(addToCartSuccess(response.data))
+      })
+      .catch(error => {
+        throw(error);
+      });
+  };
+};
+
+export const fetchCartSuccess = (items) => {
+  return {
+    type: actionTypes.FETCH_CART_SUCCESS,
+    items
+  };
+};
+
+export const fetchCart = () => {
+  return (dispatch) => {
+    return Axios.get(`${apiUrl}/Cart`)
+      .then(response => {
+        dispatch(fetchCartSuccess(response.data))
+      })
+      .catch(error => {
+        throw(error);
+      });
+  };
+};

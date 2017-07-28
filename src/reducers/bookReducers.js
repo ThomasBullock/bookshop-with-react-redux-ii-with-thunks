@@ -1,6 +1,8 @@
 // ./src/reducers/bookReducer.js
-export default (state = [], action) => {
-  switch (action.type){
+import * as actionTypes from '../actions/actionTypes';
+// For handling array of books
+export const booksReducer = (state = [], action) => {
+  switch (action.type) {
     case 'CREATE_BOOK_SUCCESS':
         return [
           ...state,
@@ -12,6 +14,22 @@ export default (state = [], action) => {
           return state;
   }
 };
+
+
+// For handling a single book
+export const bookReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'FETCH_BOOK_BY_ID_SUCCESS':
+      return action.book;
+    default:
+      return state;
+  }
+};
+// This time the reducers are named so we can use named import to 
+// gain access to them from the root reducer file:
+
+
+
 
 // export default (state = [], action) => {
 //   switch (action.type){
