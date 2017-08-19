@@ -12,6 +12,8 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './styles/styles.css'
 import * as bookActions from './actions/bookActions';
 
+import rootSaga from './sagas';
+
 import configureStore from './store/configureStore';
 
 const store = configureStore();
